@@ -1,7 +1,9 @@
 import React from 'react';
 import {useField} from "formik";
+import useValidator from "../hooks/useValidator";
 
-const Select = ({label, name, error, validate, initialValue, children, ...props}) => {
+const Select = ({label, name, error, options, initialValue, children, ...props}) => {
+    const validate = useValidator(options);
     const [field] = useField({...props, name, validate, initialValue, error});
 
     return (
@@ -9,6 +11,7 @@ const Select = ({label, name, error, validate, initialValue, children, ...props}
             <select {...field} {...props}>
                 {children}
             </select>
+            {error && <span>{error}</span>}
         </label>
     );
 };

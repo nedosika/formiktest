@@ -2,6 +2,8 @@ import React from "react";
 import FormBuilder from "./components/FormBuilder";
 import Field from "./components/Field";
 import Select from "./components/Select";
+import useValidator from "./hooks/useValidator";
+import useTerminator from "./hooks/useTerminator";
 
 function validateEmail(value) {
     let error;
@@ -22,33 +24,30 @@ function validateFirstName(value) {
 }
 
 function App() {
+    const {min, max} = useTerminator();
     return (
         <FormBuilder
             onSubmit={(values) => console.log(values)}
         >
             <Field
-                id="firstName"
                 name="firstName"
                 initialValue="test"
                 placeholder="Jane"
                 label="First Name:"
-                validate={validateFirstName}
             />
             <Field
-                id="lastName"
                 name="lastName"
                 initialValue=''
                 placeholder="Doe"
                 label="Last Name:"
+                validate={max(5, 'too long')}
             />
             <Field
-                id="email"
                 name="email"
                 initialValue=''
                 placeholder="jane@acme.com"
                 type="email"
                 label="Email:"
-                validate={validateEmail}
             />
             <Select
                 name="color"
