@@ -1,17 +1,15 @@
 import React from 'react';
+import {useField} from "formik";
 
-const Select = ({children, initialValue, ...props}) => {
-    const [value, setValue] = React.useState(initialValue);
-
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setValue(value);
-    }
+const Select = ({label, name, error, validate, initialValue, children, ...props}) => {
+    const [field] = useField({...props, name, validate, initialValue, error});
 
     return (
-        <select value={value} onChange={handleChange} {...props}>
-            {children}
-        </select>
+        <label htmlFor={name}>{label}
+            <select {...field} {...props}>
+                {children}
+            </select>
+        </label>
     );
 };
 

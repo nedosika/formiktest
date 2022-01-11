@@ -1,20 +1,14 @@
 import React from 'react';
+import {useField} from "formik";
 
-const Field = ({label, initialValue, ...props}) => {
-    const [value, setValue] = React.useState(initialValue);
-
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setValue(value);
-    }
+const Field = ({label, name, error, validate, initialValue, ...props}) => {
+    const [field] = useField({...props, name, validate, initialValue, error});
 
     return (
-        <>
-            <label>
-                {label}
-                <input value={value} {...props} onChange={handleChange}/>
-            </label>
-        </>
+        <label htmlFor={name}>{label}
+            <input {...field} {...props} />
+            {error && <span>{error}</span>}
+        </label>
     );
 };
 
