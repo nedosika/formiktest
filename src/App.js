@@ -3,7 +3,6 @@ import FormBuilder from "./components/FormBuilder";
 import Field from "./components/Field";
 import Select from "./components/Select";
 import useValidator from "./hooks/useValidator";
-import useTerminator from "./hooks/useTerminator";
 
 function validateEmail(value) {
     let error;
@@ -15,16 +14,9 @@ function validateEmail(value) {
     return error;
 }
 
-function validateFirstName(value) {
-    let error;
-    if (value === 'admin') {
-        error = 'Nice try!';
-    }
-    return error;
-}
-
 function App() {
-    const {min, max} = useTerminator();
+    const {validate, minLength, maxLength, email, string, required} = useValidator();
+
     return (
         <FormBuilder
             onSubmit={(values) => console.log(values)}
@@ -34,20 +26,36 @@ function App() {
                 initialValue="test"
                 placeholder="Jane"
                 label="First Name:"
+                validate={validate([
+                    minLength(2, 'too short'),
+                    maxLength(10, 'too long')
+                ])}
             />
             <Field
                 name="lastName"
                 initialValue=''
                 placeholder="Doe"
                 label="Last Name:"
-                validate={max(5, 'too long')}
+                validate={validate([string('must be string')])}
             />
             <Field
                 name="email"
                 initialValue=''
                 placeholder="jane@acme.com"
+                validate={validateEmail}
                 type="email"
                 label="Email:"
+            />
+            <Field
+                name="email2"
+                initialValue=''
+                placeholder="jane@acme.com"
+                validate={validate([
+                    required('required'),
+                    email('wrong email')
+                ])}
+                type="email"
+                label="Email2:"
             />
             <Select
                 name="color"

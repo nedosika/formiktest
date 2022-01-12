@@ -1,16 +1,16 @@
 import React from 'react';
 import {useField} from "formik";
-import useValidator from "../hooks/useValidator";
 
 const Field = ({label, name, error, validate, initialValue, ...props}) => {
-    //const validate = useValidator(options);
-    const [field] = useField({...props, name, validate, initialValue, error});
+    const [field] = useField({...props, name, error, validate, initialValue});
 
     return (
-        <label htmlFor={name}>{label}
-            <input {...field} {...props} />
-            {error && <span>{error}</span>}
-        </label>
+        <div>
+            <label htmlFor={name}>{label}
+                <input {...field} {...props} />
+                {error && <div style={{color: 'red'}}>{error}</div>}
+            </label>
+        </div>
     );
 };
 
