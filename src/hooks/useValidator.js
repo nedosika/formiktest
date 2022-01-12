@@ -7,8 +7,16 @@ const useValidator = (options) => {
         return value.length < minLength && message
     }
 
+    const max = (max, message) => (value) => {
+        return value > max && message
+    }
+
+    const min = (min, message) => (value) => {
+        return value < min && message
+    }
+
     const string = (message) => (value) => {
-        return typeof value !== 'string' && message
+        return !/^[a-zA-Z]+$/.test(value) && message
     }
 
     const required = (message) => (value) => {
@@ -17,6 +25,14 @@ const useValidator = (options) => {
 
     const email = (message) => (value) => {
         return !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) && message
+    }
+
+    const number = (message) => (value) => {
+        return /\D/.test(value) && message
+    }
+
+    const pattern = (pattern, message) => (value) => {
+        return pattern.test(value) && message
     }
 
     const validate = (validators) => (value) => {
@@ -35,7 +51,7 @@ const useValidator = (options) => {
         return errorMessage;
     }
 
-    return {minLength, maxLength, email, required, string, validate};
+    return {minLength, maxLength, max, min, email, required, string, number, pattern, validate};
 }
 
 export default useValidator;

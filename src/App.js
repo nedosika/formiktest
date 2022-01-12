@@ -4,18 +4,19 @@ import Field from "./components/Field";
 import Select from "./components/Select";
 import useValidator from "./hooks/useValidator";
 
-function validateEmail(value) {
-    let error;
-    if (!value) {
-        error = 'Required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-        error = 'Invalid email address';
-    }
-    return error;
-}
-
 function App() {
-    const {validate, minLength, maxLength, email, string, required} = useValidator();
+    const {
+        validate,
+        minLength,
+        maxLength,
+        min,
+        max,
+        email,
+        string,
+        number,
+        pattern,
+        required
+    } = useValidator();
 
     return (
         <FormBuilder
@@ -27,6 +28,8 @@ function App() {
                 placeholder="Jane"
                 label="First Name:"
                 validate={validate([
+                    required('must be required'),
+                    string('must be a string'),
                     minLength(2, 'too short'),
                     maxLength(10, 'too long')
                 ])}
@@ -36,18 +39,25 @@ function App() {
                 initialValue=''
                 placeholder="Doe"
                 label="Last Name:"
-                validate={validate([string('must be string')])}
+                validate={validate([
+                    required('must be required'),
+                    string('must be a string')
+                ])}
+            />
+            <Field
+                name="age"
+                initialValue="18"
+                placeholder="Jane"
+                label="Age:"
+                validate={validate([
+                    required('must be required'),
+                    number('must be a number'),
+                    min(2, 'too small'),
+                    max(10, 'too big')
+                ])}
             />
             <Field
                 name="email"
-                initialValue=''
-                placeholder="jane@acme.com"
-                validate={validateEmail}
-                type="email"
-                label="Email:"
-            />
-            <Field
-                name="email2"
                 initialValue=''
                 placeholder="jane@acme.com"
                 validate={validate([
@@ -55,7 +65,7 @@ function App() {
                     email('wrong email')
                 ])}
                 type="email"
-                label="Email2:"
+                label="Email:"
             />
             <Select
                 name="color"
