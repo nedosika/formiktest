@@ -33,6 +33,9 @@ function App() {
                     minLength(2, 'too short'),
                     maxLength(10, 'too long')
                 ])}
+                restrictions={validate([
+                    maxLength(10)
+                ])}
             />
             <Field
                 name="lastName"
